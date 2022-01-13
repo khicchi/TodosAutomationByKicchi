@@ -1,4 +1,4 @@
-package net.kicchi.todos;
+package net.kicchi.todos.step_definitions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -8,19 +8,19 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class Hooks {
 
     @Before
     public void setUp(){
-        DriverUtil.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        DriverUtil.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        DriverUtil.getDriver().manage().window().maximize();
     }
 
     @After
     public void tearDown(Scenario scenario){
         if(scenario.isFailed()){
-            final byte[] screenshot = ((TakesScreenshot) DriverUtil.get()).getScreenshotAs(OutputType.BYTES);
+            final byte[] screenshot = ((TakesScreenshot) DriverUtil.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot,"image/png","screenshot");
         }
 
