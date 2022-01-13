@@ -2,6 +2,8 @@ package net.kicchi.todos.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.NoArgsConstructor;
+import net.kicchi.todos.enums.BrowserType;
+import net.kicchi.todos.exception.AutomationException;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -14,7 +16,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -26,55 +27,61 @@ public class DriverUtil {
 
     private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
 
-    public static WebDriver get() {
+    public static WebDriver getDriver() {
         try {
             if (driverPool.get() == null) {
-                String browser = System.getProperty("browser") != null ? browser = System.getProperty("browser") : ConfigurationReaderUtil.get("browser");
-                switch (browser) {
-                    case "chrome":
+                BrowserType browserType = null;
+                if (System.getProperty("browser") != null)
+                    browserType = BrowserType.getByName(System.getProperty("browser"));
+                else
+                    browserType = ConfigurationReaderUtil.getConfiguration().getBrowserType();
+
+                switch (browserType) {
+                    case CHROME:
                         WebDriverManager.chromedriver().setup();
                         driverPool.set(new ChromeDriver());
                         break;
-                    case "chrome-headless":
+                    case CHROME_HEADLESS:
                         WebDriverManager.chromedriver().setup();
                         driverPool.set(new ChromeDriver(new ChromeOptions().setHeadless(true)));
                         break;
-                    case "firefox":
+                    case FIREFOX:
                         WebDriverManager.firefoxdriver().setup();
                         driverPool.set(new FirefoxDriver());
                         break;
-                    case "firefox-headless":
+                    case FIREFOX_HEADLESS:
                         WebDriverManager.firefoxdriver().setup();
                         driverPool.set(new FirefoxDriver(new FirefoxOptions().setHeadless(true)));
                         break;
-                    case "ie":
+                    case INTERNET_EXPLORER:
                         if (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                            throw new WebDriverException("Your OS doesn't support Internet Explorer");
+                            throw new AutomationException("Your OS doesn't support Internet Explorer");
                         WebDriverManager.iedriver().setup();
                         driverPool.set(new InternetExplorerDriver());
                         break;
-                    case "edge":
+                    case EDGE:
                         if (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                            throw new WebDriverException("Your OS doesn't support Edge");
+                            throw new AutomationException("Your OS doesn't support Edge");
                         WebDriverManager.edgedriver().setup();
                         driverPool.set(new EdgeDriver());
                         break;
-                    case "safari":
+                    case SAFARI:
                         if (!System.getProperty("os.name").toLowerCase().contains("mac"))
-                            throw new WebDriverException("Your OS doesn't support Safari");
+                            throw new AutomationException("Your OS doesn't support Safari");
                         WebDriverManager.getInstance(SafariDriver.class).setup();
                         driverPool.set(new SafariDriver());
                         break;
-                    case "remote_chrome":
+                    case CHROME_REMOTE:
                         ChromeOptions chromeOptions = new ChromeOptions();
                         chromeOptions.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://3.236.102.181:4444/wd/hub"), chromeOptions));
+                        driverPool.set(new RemoteWebDriver(new URL(ConfigurationReaderUtil.getConfiguration().getRemoteGridUrl()), chromeOptions));
                 }
             }
+            return driverPool.get();
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return driverPool.get();
     }
 
     public static void closeDriver() {
