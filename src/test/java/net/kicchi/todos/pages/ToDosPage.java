@@ -48,6 +48,12 @@ public class ToDosPage {
     @FindBy(xpath = "//ul[@class='todo-list']//li/div/label")
     private List<WebElement> allTodoElements;
 
+    @FindBy(className = "clear-completed")
+    private WebElement clearCompletedButton;
+
+    @FindBy(className = "clear-completed")
+    private List<WebElement> clearCompletedButtons;
+
     public WebElement getTodoFromList(String todoTitle) {
         return DriverUtil.getDriver().findElement(By.xpath(todoListContainerXPathLocator +
                 "//li[.='" + todoTitle + "']"));
@@ -95,6 +101,7 @@ public class ToDosPage {
                 break;
         }
     }
+
 
 
 }

@@ -3,6 +3,7 @@ package net.kicchi.todos.step_definitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import net.kicchi.todos.utils.BrowserUtil;
 import net.kicchi.todos.utils.DriverUtil;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -13,7 +14,7 @@ public class Hooks {
 
     @Before
     public void setUp(){
-        DriverUtil.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
+        BrowserUtil.turnOnImplicitWaits();
         DriverUtil.getDriver().manage().window().maximize();
     }
 

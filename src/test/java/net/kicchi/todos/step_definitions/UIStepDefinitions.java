@@ -10,8 +10,6 @@ import net.kicchi.todos.utils.BrowserUtil;
 import net.kicchi.todos.utils.ConfigurationReaderUtil;
 import net.kicchi.todos.utils.DriverUtil;
 import org.junit.Assert;
-import org.junit.Assume;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -180,5 +178,27 @@ public class UIStepDefinitions {
             if (!activeTodoTitles.contains(expectedTitle))
                 Assert.fail(expectedTitle + " can not be found in the All tab");
         }
+    }
+
+    @Then("user should not see Clear Completed button")
+    public void userShouldNotSeeClearCompletedButton() {
+        BrowserUtil.turnOffImplicitWaits();
+        assertThat(toDosPage.getClearCompletedButtons().size()).isEqualTo(0);
+        BrowserUtil.turnOnImplicitWaits();
+    }
+
+    @Then("user should see Clear Completed button")
+    public void userShouldSeeClearCompletedButton() {
+        assertThat(toDosPage.getClearCompletedButtons().size()).isEqualTo(1);
+    }
+
+    @And("user unchecks completed checkbox of the {string}")
+    public void userUnchecksCompletedCheckboxOfThe(String todoTitleToUncheck) {
+        toDosPage.getCompleteCheckBoxOfToDo(todoTitleToUncheck).click();
+    }
+
+    @Then("user clicks on the Clear Completed button")
+    public void userClicksOnTheClearCompletedButton() {
+        toDosPage.getClearCompletedButton().click();
     }
 }

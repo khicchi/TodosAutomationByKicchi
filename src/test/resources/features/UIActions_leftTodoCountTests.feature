@@ -1,5 +1,5 @@
 @UI @UI-Actions
-Feature: User should mark todos as completed or uncompleted, and should see the count of left todos
+Feature: Marking todos as completed or uncompleted, and updating the count of left todos
 
   Background: User should be on the main page
     Given user is on the main todos page

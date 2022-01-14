@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,5 +133,13 @@ public class BrowserUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void turnOffImplicitWaits() {
+        DriverUtil.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
+    }
+
+    public static void turnOnImplicitWaits() {
+        DriverUtil.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
     }
 }

@@ -1,5 +1,5 @@
 @UI @UI-CRUD
-Feature: User should create, update, delete one or multiple todos
+Feature: CRUD operations on one or multiple todos
 
   Background: User should be on the main page
     Given user is on the main todos page

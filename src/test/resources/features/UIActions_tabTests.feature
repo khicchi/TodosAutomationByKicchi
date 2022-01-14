@@ -1,6 +1,6 @@
 @UI @UI-Actions
-Feature: User should be able to access the todos by their completion or active status by clicking the
-  All, Active and Completed tabs
+Feature: Accessing the todos by their completion or active status
+  by clicking the All, Active and Completed tabs
 
   Background: User should be on the main page
     Given user is on the main todos page
