@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.NoArgsConstructor;
 import net.kicchi.todos.enums.BrowserType;
 import net.kicchi.todos.exception.AutomationException;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -27,6 +28,7 @@ public class DriverUtil {
 
     private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
 
+    @NonNull
     public static WebDriver getDriver() {
         try {
             if (driverPool.get() == null) {
@@ -77,11 +79,10 @@ public class DriverUtil {
                         driverPool.set(new RemoteWebDriver(new URL(ConfigurationReaderUtil.getConfiguration().getRemoteGridUrl()), chromeOptions));
                 }
             }
-            return driverPool.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return driverPool.get();
     }
 
     public static void closeDriver() {

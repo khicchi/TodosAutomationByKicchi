@@ -15,6 +15,8 @@ import java.util.List;
 @Getter
 public class ToDosPage {
 
+    private static final String todoListContainerXPathLocator = "//ul[@class='todo-list']";
+
     public ToDosPage(){
         PageFactory.initElements(DriverUtil.getDriver(), this);
     }
@@ -25,12 +27,18 @@ public class ToDosPage {
     @FindBy(css = ".todo-list li")
     private List<WebElement> allToDosAsList;
 
-    public WebElement getTodoFromList(String todoTitle) throws AutomationException {
-        try{
-            return DriverUtil.getDriver().findElement(By.xpath("//ul[@class='todo-list']//li[.='" +
-                    todoTitle + "']"));
-        }catch (NoSuchElementException e){
-            throw new AutomationException("There is no todo with '" + todoTitle + "' title.");
-        }
+    public WebElement getTodoFromList(String todoTitle) {
+        return DriverUtil.getDriver().findElement(By.xpath(todoListContainerXPathLocator +
+                "//li[.='" + todoTitle + "']"));
+    }
+
+    public WebElement getDestroyButtonOfToDo(String todoTitle) {
+        return DriverUtil.getDriver().findElement(By.xpath(todoListContainerXPathLocator +
+                "//li[.='" + todoTitle + "']//*[@class='destroy']"));
+    }
+
+    public WebElement getEditBoxOfToDo(String todoToEdit){
+        return DriverUtil.getDriver().findElement(By.xpath(todoListContainerXPathLocator+
+                "//li[.='" + todoToEdit + "']//input[@class='edit']"));
     }
 }

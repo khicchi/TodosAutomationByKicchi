@@ -13,7 +13,6 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Getter
 public class ApplicationConfig {
-
     @JsonProperty("main-page-url")
     private String mainPageUrl;
 
