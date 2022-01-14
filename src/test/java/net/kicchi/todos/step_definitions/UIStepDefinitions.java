@@ -6,9 +6,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.kicchi.todos.pages.ToDosPage;
+import net.kicchi.todos.utils.BrowserUtil;
 import net.kicchi.todos.utils.ConfigurationReaderUtil;
 import net.kicchi.todos.utils.DriverUtil;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -17,6 +19,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -29,7 +32,8 @@ public class UIStepDefinitions {
     @Given("user is on the main todos page")
     public void user_is_on_the_main_todos_page() {
         //open the main page of todos mvc project
-        DriverUtil.getDriver().get(ConfigurationReaderUtil.getConfiguration().getMainPageUrl());
+        DriverUtil.getDriver().get(Objects.requireNonNull(ConfigurationReaderUtil.getConfiguration())
+                                                                                .getMainPageUrl());
         toDosPage = new ToDosPage();
     }
     @When("user clicks on the new todo text box")
@@ -99,7 +103,7 @@ public class UIStepDefinitions {
 
     @And("user changes {string} title to {string}")
     public void userChangesTitleTo(String titleToFind, String titleToChange) {
-        todoToEdit = toDosPage.getEditBoxOfToDo(titleToFind);
+        todoToEdit = toDosPage.getCompleteCheckBoxOfToDo(titleToFind);
 
         for (int i = 0; i < titleToFind.length(); i++) {
             todoToEdit.sendKeys(Keys.BACK_SPACE);
@@ -125,11 +129,56 @@ public class UIStepDefinitions {
     @Then("user should see following todos in todo list")
     public void userShouldSeeFollowingTodosInTodoList(List<String> titlesToCheck) {
         titlesToCheck.forEach(this::userShouldSeeInTodoList);
-        try{
-            Thread.sleep(3000);
-        }
-        catch (Exception e){
+    }
 
+    @Then("user should see {int} as left item count")
+    public void userShouldSeeAsLeftItemCount(int leftItemCountExpected) {
+        Assert.assertEquals("Left item count did not match",
+                leftItemCountExpected, toDosPage.getLeftItemCount());
+    }
+
+    @Then("user should not see left item count and filter panel")
+    public void userShouldNotSeeLeftItemCountAndFilterPanel() {
+        Assert.assertThrows(NoSuchElementException.class,
+                () -> System.out.println(toDosPage.getLeftItemCount()));
+        Assert.assertThrows(NoSuchElementException.class,
+                () -> System.out.println(toDosPage.getFilterElementActive().getText()));
+    }
+
+
+    @And("user creates {string} as a new todo")
+    public void userCreatesAsANewTodo(String newTodoTitle) {
+        userWritesAsANewTodo(newTodoTitle);
+        toDosPage.getNewTodoTitleTextBox().sendKeys(Keys.ENTER);
+    }
+
+    @And("user checks completed checkbox of the {string}")
+    public void userChecksCompletedCheckboxOfThe(String todoTitleToComplete) {
+        toDosPage.getCompleteCheckBoxOfToDo(todoTitleToComplete).click();
+    }
+
+    @And("user navigates to the {string} tab")
+    public void userNavigatesToTheTab(String tabNameToNavigate) {
+        toDosPage.navigateToTab(tabNameToNavigate);
+    }
+
+    @Then("user should see the {string} in Completed tab")
+    public void userShouldSeeTheInCompletedTab(String todoTitleToCheck) {
+        assertThat(toDosPage.doesCompletedTodoExist(todoTitleToCheck)).isTrue();
+    }
+
+    @Then("user should not see the {string} in Active tab")
+    public void userShouldNotSeeTheInActiveTab(String todoTitleToCheck) {
+        List<String> activeTodoTitles = BrowserUtil.getElementsText(toDosPage.getActiveTodoElements());
+        assertThat(activeTodoTitles.contains(todoTitleToCheck)).isFalse();
+    }
+
+    @Then("user should see the following todos in the All tab")
+    public void userShouldSeeTheFollowingTodosInTheAllTab(List<String> todoTitlesToCheck) {
+        List<String> activeTodoTitles = BrowserUtil.getElementsText(toDosPage.getAllTodoElements());
+        for (String expectedTitle:todoTitlesToCheck) {
+            if (!activeTodoTitles.contains(expectedTitle))
+                Assert.fail(expectedTitle + " can not be found in the All tab");
         }
     }
 }
