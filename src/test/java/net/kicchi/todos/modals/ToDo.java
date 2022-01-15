@@ -1,12 +1,14 @@
 package net.kicchi.todos.modals;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 public class ToDo {
 
     private int id;
@@ -16,6 +18,7 @@ public class ToDo {
 
     public ToDo(String title, int userId) {
         this.title = title;
+        this.completed = completed;
         this.userId = userId;
     }
 
