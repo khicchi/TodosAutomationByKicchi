@@ -1,4 +1,4 @@
-package net.kicchi.todos.step_definitions;
+package net.kicchi.todos.step_definitions.ui;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
