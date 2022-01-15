@@ -1,6 +1,5 @@
 package net.kicchi.todos.step_definitions.api;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
@@ -13,10 +12,38 @@ import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GETStepDefinitions extends APIBase {
+public class GETStepDefinitions {
+
+    protected final String baseAPIUrl = Objects.requireNonNull(ConfigurationReaderUtil.getConfiguration())
+            .getApiBaseURL();
+
+    protected List<ToDo> toDoList;
+    protected Response response;
+    protected ToDo singleToDoFromAPI, newToDo;
+
+    protected void assertStatus200(){
+        assertThat(response.statusCode()).isEqualTo(200);
+    }
+
+    protected void assertContentTypeJson(){
+        Assert.assertEquals("application/json; charset=utf-8", response.contentType());
+    }
+
+    protected void getTodosByField(String fieldName, Object parameter){
+        response = given().queryParam(fieldName, parameter).when().get(baseAPIUrl);
+        assertStatus200();
+        assertContentTypeJson();
+        toDoList = response.then().extract().body().jsonPath().getList(".", ToDo.class);
+        assertThat(toDoList.size()).isNotZero();
+        singleToDoFromAPI = toDoList.get(0);
+    }
+
+    @When("I send a get request with todo id {int}")
+    public void iSendAGetRequestWithTodoId(int todoId) {
+        getTodosByField("id", todoId);
+    }
 
     @When("I send a get request")
     public void i_send_a_get_request() {
@@ -38,18 +65,13 @@ public class GETStepDefinitions extends APIBase {
         assertThat(doesCompletedTodoExist && doesNotCompletedTodoExist).isTrue();
     }
 
-    @When("I send a get request with todo id {int}")
-    public void iSendAGetRequestWithTodoId(int todoId) {
-        getTodosByField("id", todoId);
-    }
-
     @Then("I should be able to retrieve todo with id {int}")
     public void iShouldBeAbleToRetrieveTodoWithId(int todoId) {
-        assertThat(singleToDo).isNotNull();
+        assertThat(singleToDoFromAPI).isNotNull();
 
         ToDo expectedToDo = new ToDo(100,"excepturi a et neque qui expedita vel voluptate",
                 false, 5);
-        assertThat(singleToDo)
+        assertThat(singleToDoFromAPI)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedToDo);
     }
