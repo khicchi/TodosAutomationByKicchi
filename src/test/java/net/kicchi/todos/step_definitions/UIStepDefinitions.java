@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import lombok.extern.log4j.Log4j2;
 import net.kicchi.todos.pages.ToDosPage;
 import net.kicchi.todos.utils.BrowserUtil;
 import net.kicchi.todos.utils.ConfigurationReaderUtil;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.*;
 
+@Log4j2
 public class UIStepDefinitions {
 
     private ToDosPage toDosPage;
@@ -30,10 +32,12 @@ public class UIStepDefinitions {
     @Given("user is on the main todos page")
     public void user_is_on_the_main_todos_page() {
         //open the main page of todos mvc project
+        log.info("I am on the page");
         DriverUtil.getDriver().get(Objects.requireNonNull(ConfigurationReaderUtil.getConfiguration())
                                                                                 .getMainPageUrl());
         toDosPage = new ToDosPage();
     }
+
     @When("user clicks on the new todo text box")
     public void user_clicks_on_the_new_todo_text_box() {
         toDosPage.getNewTodoTitleTextBox().click();
@@ -89,7 +93,9 @@ public class UIStepDefinitions {
 
     @Then("user should not see the deleted todos")
     public void userShouldNotSeeTheDeletedTodos() {
+        BrowserUtil.turnOffImplicitWaits();
         multipleToDoTitlesForDeletion.asList().forEach(this::userShouldNotSeeThe);
+        BrowserUtil.turnOnImplicitWaits();
     }
 
     @And("user double clicks over the {string} todo")
@@ -101,7 +107,7 @@ public class UIStepDefinitions {
 
     @And("user changes {string} title to {string}")
     public void userChangesTitleTo(String titleToFind, String titleToChange) {
-        todoToEdit = toDosPage.getCompleteCheckBoxOfToDo(titleToFind);
+        todoToEdit = toDosPage.getEditBoxOfToDo(titleToFind);
 
         for (int i = 0; i < titleToFind.length(); i++) {
             todoToEdit.sendKeys(Keys.BACK_SPACE);
@@ -137,10 +143,12 @@ public class UIStepDefinitions {
 
     @Then("user should not see left item count and filter panel")
     public void userShouldNotSeeLeftItemCountAndFilterPanel() {
+        BrowserUtil.turnOffImplicitWaits();
         Assert.assertThrows(NoSuchElementException.class,
                 () -> System.out.println(toDosPage.getLeftItemCount()));
         Assert.assertThrows(NoSuchElementException.class,
                 () -> System.out.println(toDosPage.getFilterElementActive().getText()));
+        BrowserUtil.turnOnImplicitWaits();
     }
 
 
