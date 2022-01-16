@@ -17,8 +17,7 @@ public class APIBase {
 
     protected List<ToDo> toDoList;
     protected Response response;
-    protected ToDo singleToDo;
-    protected ToDo newToDo;
+    protected ToDo singleToDoFromAPI, newToDo, updatedToDo;
 
     protected void assertStatus200(){
         assertThat(response.statusCode()).isEqualTo(200);
@@ -34,6 +33,6 @@ public class APIBase {
         assertContentTypeJson();
         toDoList = response.then().extract().body().jsonPath().getList(".", ToDo.class);
         assertThat(toDoList.size()).isNotZero();
-        singleToDo = toDoList.get(0);
+        singleToDoFromAPI = toDoList.get(0);
     }
 }
