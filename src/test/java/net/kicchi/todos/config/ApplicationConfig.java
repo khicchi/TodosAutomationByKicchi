@@ -13,6 +13,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Getter
 public class ApplicationConfig {
+
     @JsonProperty("main-page-url")
     private String mainPageUrl;
 
@@ -25,7 +26,12 @@ public class ApplicationConfig {
     @JsonProperty("remote-grid-url")
     private String remoteGridUrl;
 
+    @JsonProperty("api-base-url")
+    private String apiBaseURL;
+
     public BrowserType getBrowserType(){
         return BrowserType.getById(browserTypeId);
     }
+
+
 }

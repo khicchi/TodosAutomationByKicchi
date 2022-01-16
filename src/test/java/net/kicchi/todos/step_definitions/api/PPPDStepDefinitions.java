@@ -11,6 +11,8 @@ import net.kicchi.todos.modals.ToDo;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.hamcrest.Matchers.*;
+
 public class PPPDStepDefinitions extends APIBase {
 
     @Given("a new todo with user id {int}, title {string}")
@@ -110,6 +112,6 @@ public class PPPDStepDefinitions extends APIBase {
 
     @And("the response status must be successful")
     public void theResponseStatusMustBeSuccessful() {
-        assertStatus200();
+        response.then().assertThat().statusCode(equalTo(200));
     }
 }
