@@ -45,6 +45,7 @@ All OOP princibles are implemented.
 ![Rest Assured](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/restassured.png?raw=true)
 ![Selenium Web Driver](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/selenium_web_driver.png?raw=true)
 
+## Fancy Cucumber HTML reports
 ![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/0-features1.PNG?raw=true)
 ![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/1-features2.PNG?raw=true)
 ![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/2-tags1.PNG?raw=true)
