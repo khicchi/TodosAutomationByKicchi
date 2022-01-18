@@ -32,6 +32,7 @@ All OOP princibles are implemented.
 
 **Project Lombok** as boiler plate code wrapper
 
+![Maven](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/apache_maven.png?raw=true)
 ![AssertJ](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/assertj.png?raw=true)
 ![Cucumber](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/cucumber.png?raw=true)
 ![Gson](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/gson.png?raw=true)
