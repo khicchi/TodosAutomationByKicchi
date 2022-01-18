@@ -44,3 +44,9 @@ All OOP princibles are implemented.
 ![Lombok](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/lombok.png?raw=true)
 ![Rest Assured](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/restassured.png?raw=true)
 ![Selenium Web Driver](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/libraries/selenium_web_driver.png?raw=true)
+
+![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/0-features1.PNG?raw=true)
+![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/1-features2.PNG?raw=true)
+![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/2-tags1.PNG?raw=true)
+![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/3-tags2.PNG?raw=true)
+![RepostScS](https://github.com/khicchi/TodosAutomationByKicchi/blob/master/src/test/resources/images/reportscreenshots/4-steps.PNG?raw=true)
